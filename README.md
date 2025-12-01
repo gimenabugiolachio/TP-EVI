@@ -103,8 +103,9 @@ Base de datos: tareas_db
 
 ---
 
-# Estructura del proyecto
+## Estructura del proyecto
 
+```text
 TP-EVI/
 │
 ├── app/
@@ -115,6 +116,8 @@ TP-EVI/
 ├── docker-compose.yml
 ├── .env
 └── README.md
+```
+
 
 ---
 
