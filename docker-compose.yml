@@ -1,49 +1,66 @@
+version: "3.9" 
+
 services:
+  # ==============================
+  # Servicio de Base de Datos (PostgreSQL)
+  # ==============================
   db:
-    image: postgres:16-alpine
-    container_name: tp_db
-    environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    image: postgres:16-alpine          
+    container_name: tp_db              # nombre del contenedor
+    environment:                       
+      - POSTGRES_DB=${DB_NAME}         # nombre bd
+      - POSTGRES_USER=${DB_USER}       # uer
+      - POSTGRES_PASSWORD=${DB_PASSWORD} # pass del user
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data  
     ports:
-      - "5432:5432" 
+      - "5432:5432"                    
     networks:
-      - backend
+      - backend                        # red interna compartida con la API y Adminer
 
+  # ==============================
+  # Servicio de API (Flask)
+  # ==============================
   api:
-    build: ./app
-    container_name: tp_api
-    environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
+    build: ./app                       
+    container_name: tp_api             # nombre del contenedor de la API
+    environment:                       
+      - DB_HOST=db                     
+      - DB_PORT=5432                   # puerto bd en dcker
+      - DB_NAME=${DB_NAME}             # bd
+      - DB_USER=${DB_USER}             # user de la base
+      - DB_PASSWORD=${DB_PASSWORD}     # pass de la base
     depends_on:
-      - db
+      - db                             # el servicio db se levanta antes que la API
     ports:
-      - "5000:5000"
+      - "5000:5000"                   
     networks:
-      - backend
+      - backend                        # misma red que la BD y Adminer
 
+  # ==============================
+  # Servicio de Adminer (cliente SQL web)
+  # ==============================
   adminer:
-    image: adminer
-    container_name: tp_adminer
+    image: adminer                     
+    container_name: tp_adminer         # nombre del contenedor de Adminer
     depends_on:
-      - db
+      - db                             # necesita BDdisponible
     environment:
-      - ADMINER_DEFAULT_SERVER=db
+      - ADMINER_DEFAULT_SERVER=db      # servidor de BD por defecto 
     ports:
-      - "8080:8080"
+      - "8080:8080"                    # puerto 8080 para acceder vía navegador
     networks:
-      - backend
+      - backend                        # misma red para poder conectarse a la BD
 
+# ==============================
+# Volúmenes persistentes
+# ==============================
 volumes:
-  db_data:
+  db_data:                             
 
+# ==============================
+# Red interna de la aplicación
+# ==============================
 networks:
   backend:
-    driver: bridge
+    driver: bridge                     # red por defecto en Docker
