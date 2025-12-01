@@ -15,12 +15,12 @@ Implementé una API RESTful completa para la gestión de tareas (ToDo, Doing, Do
 - Adminer (cliente web SQL)
 
 El sistema permite:
-✔ Crear tareas
-✔ Listar tareas
-✔ Modificar tareas
-✔ Eliminar tareas
-✔ Persistir los datos en PostgreSQL
-✔ Administrar la base mediante Adminer
+- Crear tareas
+- Listar tareas
+- Modificar tareas
+- Eliminar tareas
+- Persistir los datos en PostgreSQL
+- Administrar la base mediante Adminer
 
 ---
 
